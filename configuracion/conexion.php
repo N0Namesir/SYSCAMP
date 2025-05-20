@@ -2,9 +2,9 @@
 
 $host = "localhost";
 $port = "5432";
-$dbname = "bootcampst11";
+$dbname = "SYSCAMP";
 $user = "postgres";
-$password = "bootcamp2025"; // <-- cambia esto por la contraseña de tu usuario
+$password = "bootpass"; // <-- cambia esto por la contraseña de tu usuario
 
 $conexion = pg_connect("host=$host port=$port 
 dbname=$dbname user=$user password=$password");

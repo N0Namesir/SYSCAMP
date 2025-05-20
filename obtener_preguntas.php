@@ -1,5 +1,6 @@
 <?php
 include("configuracion/conexion.php");
+include("header.php");
 
 if (isset($_POST['categoria'])) {
     $categoria = $_POST['categoria'];

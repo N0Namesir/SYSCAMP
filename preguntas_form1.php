@@ -1,5 +1,6 @@
 <?php
 include("configuracion/conexion.php");
+include("header.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre_institucion = $_POST['nombre_institucion'];
@@ -149,6 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
+    <br><br>
 
 <form method="POST" action="preguntas_form1.php">
     <h2>Formulario de Respuestas</h2>

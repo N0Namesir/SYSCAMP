@@ -30,9 +30,9 @@ if (!isset($_SESSION['username'])) {
                 <li class="nav-item"><a class="nav-link" href="gestore2.php">Gestores</a></li>
                 <li class="nav-item"><a class="nav-link" href="escuelas.php">Escuelas</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        Configuración
-                    </a>
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                    Configuracion
+                  </a>
                     <ul class="dropdown-menu custom-dropdown">
                         <li><a class="dropdown-item" href="ver_usuarios.php">Perfil de usuarios</a></li>
                         <li><a class="dropdown-item" href="#">Editar perfil</a></li>
