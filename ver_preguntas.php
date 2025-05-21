@@ -1,15 +1,15 @@
 <?php
 include("configuracion/conexion.php");
+include_once("header.php");
 
 // Consulta SQL
-$query = "SELECT * FROM public.categoria1 ORDER BY cod_pregunta ASC";
+$query = "SELECT * FROM public.preguntas ORDER BY cod_pregunta ASC";
 $resultado = pg_query($conexion, $query);
 
 // Verificar si hubo error en la consulta
 if (!$resultado) {
     die("Error en la consulta: " . pg_last_error());
 }
-include_once("header.php");
 ?>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Listado de preguntas</h2>

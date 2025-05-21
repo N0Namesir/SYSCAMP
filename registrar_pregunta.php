@@ -1,129 +1,136 @@
 <?php
 include_once('header.php');
+//require("visitasFirst.php");
 include("configuracion/conexion.php");
+//require_once("visitasFirst.php");
+// Verifica si se ha enviado el formulario
 
-// Definir categorías y tablas
-$categorias_tablas = [
-    '2.1 Ambiente de aula' => 'categoria1',
-    '2.2 Organización de aula' => 'categoria2',
-    '2.3 Mediación pedagógica' => 'categoria3'
-];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $respuesta = $_POST['respuesta'];
+    $comentario = $_POST['comentario'];
 
-$mensaje = $error = "";
-$preguntas = [];
-$selected_category = $_GET['categoria'] ?? '';
+    $query = "INSERT INTO respuestas_detalladas (respuesta, comentario) VALUES ($1, $2)";
+    $resultado = pg_query_params($conexion, $query, array($respuesta, $comentario));
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['respuesta'])) {
-    pg_query($conexion, "BEGIN");
-    $ok = true;
-    foreach ($_POST['respuesta'] as $cod_pregunta => $respuesta) {
-        $cod_pregunta = filter_var($cod_pregunta, FILTER_VALIDATE_INT);
-        $respuesta_valor = pg_escape_string($conexion, $respuesta);
-        $comentario = pg_escape_string($conexion, $_POST['comentario'][$cod_pregunta] ?? '');
-        $categoria_nombre = $_POST['categoria_pregunta'][$cod_pregunta] ?? '';
-        if ($cod_pregunta === false || !isset($categorias_tablas[$categoria_nombre])) {
-            $ok = false;
-            continue;
-        }
-        $tabla_origen = $categorias_tablas[$categoria_nombre];
-        $query = "INSERT INTO respuesta(cod_pregunta, respuesta, comentario, categoria, tabla_origen)
-                  VALUES ($1, $2, $3, $4, $5)";
-        $res = pg_query_params($conexion, $query, [
-            $cod_pregunta, $respuesta_valor, $comentario, $categoria_nombre, $tabla_origen
-        ]);
-        if (!$res) $ok = false;
-    }
-    if ($ok) {
-        pg_query($conexion, "COMMIT");
-        $mensaje = "✅ Respuestas guardadas correctamente.";
+    if ($resultado) {
+        $mensaje = "✅ Datos insertados correctamente.";
+        header("Location: registrar_preguntas.php?cod_respuesta=");
+        exit;
     } else {
-        pg_query($conexion, "ROLLBACK");
-        $error = "❌ Error al guardar respuestas.";
-    }
-}
-
-if ($selected_category && isset($categorias_tablas[$selected_category])) {
-    $tabla = pg_escape_identifier($conexion, $categorias_tablas[$selected_category]);
-    $res = pg_query($conexion, "SELECT cod_pregunta, pregunta FROM $tabla ORDER BY cod_pregunta");
-    if ($res) {
-        $preguntas = pg_fetch_all($res) ?: [];
-        pg_free_result($res);
-    } else {
-        $error = "❌ Error al cargar preguntas: " . htmlspecialchars(pg_last_error($conexion));
+        $mensaje = "❌ Error al insertar: " . pg_last_error($conexion);
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Formulario de Evaluación</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background: #f8fafc; }
-        .main-card { max-width: 700px; margin: 40px auto; }
-        .pregunta-card { margin-bottom: 20px; }
-        .pregunta { font-weight: 500; }
-        .opciones-respuesta label { margin-right: 20px; }
-        .comentarios textarea { resize: vertical; }
-    </style>
-</head>
-<body>
-<div class="container main-card">
-    <div class="card shadow p-4">
-        <h2 class="mb-4 text-center">Formulario de Evaluación</h2>
-        <?php if ($mensaje): ?>
-            <div class="alert alert-success"><?php echo htmlspecialchars($mensaje); ?></div>
-        <?php endif; ?>
-        <?php if ($error): ?>
-            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
 
-        <form method="get" class="mb-4">
-            <div class="mb-3">
-                <label for="categoria_select" class="form-label">Seleccione una categoría:</label>
-                <select name="categoria" id="categoria_select" class="form-select" required onchange="this.form.submit()">
-                    <option value="">-- Seleccione una categoría --</option>
-                    <?php foreach ($categorias_tablas as $nombre_categoria => $tabla): ?>
-                        <option value="<?php echo htmlspecialchars($nombre_categoria); ?>"
-                            <?php if ($selected_category == $nombre_categoria) echo 'selected'; ?>>
-                            <?php echo htmlspecialchars($nombre_categoria); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </form>
+<!-- Estilo personalizado basado en la imagen -->
+<style>
+    body {
+        background-color: #1f2937;
+        font-family: 'Segoe UI', sans-serif;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        padding-top: 80px;
+    }
 
-        <?php if ($preguntas): ?>
-            <form method="post">
-                <?php foreach ($preguntas as $pregunta): ?>
-                    <div class="card pregunta-card p-3">
-                        <div class="pregunta mb-2">
-                            <?php echo htmlspecialchars($pregunta['pregunta'] ?? 'N/A'); ?>
-                        </div>
-                        <div class="opciones-respuesta mb-2">
-                            <?php foreach (['Sí', 'No', 'No aplica'] as $op): ?>
-                                <label>
-                                    <input type="radio" name="respuesta[<?php echo $pregunta['cod_pregunta']; ?>]" value="<?php echo $op; ?>" required> <?php echo $op; ?>
-                                </label>
-                            <?php endforeach; ?>
-                        </div>
-                        <div class="comentarios">
-                            <textarea class="form-control" name="comentario[<?php echo $pregunta['cod_pregunta']; ?>]" rows="2" placeholder="Comentarios (opcional)"></textarea>
-                            <input type="hidden" name="categoria_pregunta[<?php echo $pregunta['cod_pregunta']; ?>]" value="<?php echo htmlspecialchars($selected_category); ?>">
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg">Enviar Respuestas</button>
-                </div>
-            </form>
-        <?php elseif ($selected_category): ?>
-            <div class="alert alert-info text-center">No hay preguntas disponibles para esta categoría.</div>
-        <?php endif; ?>
-    </div>
+    .form-container {
+        background-color: #2d3748;
+        padding: 30px;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-size: 28px;
+    }
+
+    label {
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #cbd5e0;
+    }
+
+    select, input, textarea {
+        width: 100%;
+        padding: 12px;
+        background-color: #1a202c;
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        margin-bottom: 15px;
+    }
+
+    select:focus, input:focus, textarea:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #805ad5;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #805ad5;
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    button:hover {
+        background-color: #6b46c1;
+    }
+
+    #contenedor_preguntas {
+        margin-top: 15px;
+    }
+</style>
+
+<!-- Estructura HTML del formulario -->
+<div class="form-container">
+    <h2>Registrar Respuesta</h2>
+    <form method="POST" action="guardar_respuesta.php">
+        <input type="hidden" name="cod_respuesta" value="<?php echo htmlspecialchars($_GET['cod_respuesta'] ?? ''); ?>">
+
+        <!-- Selector de categoría -->
+        <label for="categoria">Selecciona una categoría:</label>
+        <select name="categoria" id="categoria">
+            <option value="">-- Selecciona --</option>
+            <?php
+            $query_categorias = "SELECT DISTINCT categoria FROM preguntas ORDER BY categoria";
+            $resultado = pg_query($conexion, $query_categorias);
+            while ($fila = pg_fetch_assoc($resultado)) {
+                echo "<option value='" . htmlspecialchars($fila['categoria']) . "'>" . htmlspecialchars($fila['categoria']) . "</option>";
+            }
+            ?>
+        </select>
+
+        <div id="contenedor_preguntas">
+            <!-- Aquí se cargarán dinámicamente las preguntas según la categoría -->
+        </div>
+
+        <button type="submit">Guardar respuestas y generar PDF</button>
+    </form>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
+<!-- Script para cargar preguntas dinámicamente -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#categoria').on('change', function () {
+        let categoria = $(this).val();
+        if (categoria !== '') {
+            $.post('obtener_preguntas.php', { categoria: categoria }, function (data) {
+                $('#contenedor_preguntas').html(data);
+            });
+        } else {
+            $('#contenedor_preguntas').html('');
+        }
+    });
+</script>

@@ -1,5 +1,6 @@
 <?php
 include_once('header.php');
+require_once 'configuracion/conexion.php';
 ?>
 
 <!DOCTYPE html>
@@ -68,11 +69,9 @@ include_once('header.php');
 // Note: Including header.php here again might be redundant or incorrect
 // depending on the content of header.php and the desired page structure.
 // This is included as per the user's example structure.
-include_once('header.php');
 ?>
 
 <?php
-require_once 'configuracion/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_persona = $_POST['id_persona'];
@@ -94,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($resultado) {
         echo "<div class='alert alert-success text-center'>✅ Visita registrada correctamente.</div>";
+        //header("Location: registrar_pregunta.php");
     } else {
         // It's better practice to include the PostgreSQL error for debugging
         $error_message = pg_last_error($conexion);
@@ -105,8 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $personas = pg_fetch_all(pg_query($conexion, "SELECT id_persona, nombre_persona FROM persona"));
 $instituciones = pg_fetch_all(pg_query($conexion, "SELECT id_institucion, nombre_institucion FROM institucion"));
 
-// Close the connection when done (optional here, might be in footer.php)
-// pg_close($conexion); 
 ?>
 
 <div class="container mt-5">

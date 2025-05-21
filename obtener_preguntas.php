@@ -30,6 +30,8 @@ if (isset($_POST['categoria'])) {
             echo '</div>';
 
             echo '</div>';
+
+            //header('registrar_preguntas.php');
         }
     } else {
         echo '<div class="alert alert-warning mt-3">No hay preguntas disponibles para esta categoría.</div>';

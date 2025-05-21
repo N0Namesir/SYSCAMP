@@ -96,7 +96,7 @@ if (!isset($_SESSION['username'])) {
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="registrar_pregunta.php"><i class="bi bi-person-circle me-2"></i>Responder</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-2"></i>Reporte</a></li>
+                        <li><a class="dropdown-item" href="ver_preguntas.php"><i class="bi bi-pencil-square me-2"></i>ver preguntas</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
