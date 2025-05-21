@@ -1,0 +1,203 @@
+/* estilos.css */
+/* Estilos base */
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Estilos para la barra de navegación (si decides moverlos aquí) */
+.navbar-custom {
+    background: linear-gradient(90deg, #007bff, #29abe2);
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #fdd835;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    color: #333;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: #e0f7fa;
+}
+
+.navbar-toggler {
+    border-color: #fff;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba%28255,255,255,1%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Estilos para la página principal */
+.hero-section {
+    background: linear-gradient(135deg, #fff 60%, #a7d9ed 100%);
+    padding: 10rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.hero-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #0056b3;
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #555;
+    margin-bottom: 2.5rem;
+}
+
+.hero-image-container {
+    position: relative;
+}
+
+.hero-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.features-section {
+    padding: 6rem 0;
+    background-color: #f9fbe7;
+}
+
+.features-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.75rem;
+    font-weight: 700;
+    color: #d84315;
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.feature-item {
+    padding: 2.5rem;
+    border-radius: 0.75rem;
+    background-color: #fffde7;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-left: 0.25rem solid #f4511e;
+}
+
+.feature-item:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+    font-size: 3.5rem;
+    color: #1e88e5;
+    margin-bottom: 1.25rem;
+    opacity: 0.8;
+    transition: transform 0.2s ease-in-out;
+}
+
+.feature-item:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+.feature-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #e65100;
+    margin-bottom: 1rem;
+}
+
+.feature-description {
+    color: #555;
+    line-height: 1.8;
+}
+
+/* Estilos para el pie de página */
+.footer {
+    background-color: #37474f;
+    color: #fff;
+    padding: 2rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+    border-top: 0.25rem solid #f9a825;
+}
+
+.footer a {
+    color: #81c784;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.footer a:hover {
+    color: #a5d6a7;
+}
+
+/* Estilos específicos para la imagen del hero */
+.hero-image {
+    /* ... tus estilos ... */
+}
+/* Solución más agresiva para el header superpuesto */
+body {
+    padding-top: 120px !important; /* Valor más alto con !important para forzar */
+}
+
+.container, main, #main-content, .main-content {
+    margin-top: 30px !important;
+}
+
+/* Si estás utilizando Bootstrap o un framework similar, este selector podría ayudar */
+.navbar, .navbar-custom, header, .header, #header, .top-bar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9999 !important;
+}
