@@ -215,7 +215,6 @@ $instituciones = pg_fetch_all(pg_query($conexion, "SELECT id_institucion, nombre
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success rounded-pill">Registrar Visita</button>
                         </div>
-
                     </form>
 
                 </div>

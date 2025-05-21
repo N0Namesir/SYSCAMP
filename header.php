@@ -82,11 +82,11 @@ if (!isset($_SESSION['username'])) {
                     <a class="nav-link active" href="index.php"><i class="bi bi-house-fill me-1"></i> Inicio</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="true">
                         <i class="bi bi-gear-fill me-1"></i> Visitas
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="visitas.php"><i class="bi bi-person-circle me-2"></i>Registrar Visitas</a></li>
+                        <li><a class="dropdown-item" href="visitasFirst.php"><i class="bi bi-person-circle me-2"></i>Registrar Visitas</a></li>
                         <li><a class="dropdown-item" href="visitas_hechas.php"><i class="bi bi-pencil-square me-2"></i>Ver Visitas</a></li>
                     </ul>
                 </li>
